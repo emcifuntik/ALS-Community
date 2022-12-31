@@ -42,10 +42,11 @@ void UALSAnimNotifyFootstep::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 		const FVector FootLocation = MeshComp->GetSocketLocation(FootSocketName);
 		const FRotator FootRotation = MeshComp->GetSocketRotation(FootSocketName);
 		const FVector TraceEnd = FootLocation - MeshOwner->GetActorUpVector() * TraceLength;
+		const FVector TraceBoxSize = {10.f, 10.f, 0.1f};
 
 		FHitResult Hit;
 
-		if (UKismetSystemLibrary::LineTraceSingle(MeshOwner /*used by bIgnoreSelf*/, FootLocation, TraceEnd, TraceChannel, true /*bTraceComplex*/, MeshOwner->Children,
+		if (UKismetSystemLibrary::BoxTraceSingle(MeshOwner /*used by bIgnoreSelf*/, FootLocation, TraceEnd, TraceBoxSize, FRotator::ZeroRotator, TraceChannel, true /*bTraceComplex*/, MeshOwner->Children,
 		                                          DrawDebugType, Hit, true /*bIgnoreSelf*/))
 		{
 			if (!Hit.PhysMaterial.Get())
